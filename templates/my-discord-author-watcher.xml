@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Container version="2">
+  <Name>discord-author-watcher</Name>
+  <Repository>ghcr.io/cosmicflow2512/discord-author-watcher:latest</Repository>
+  <Registry>https://github.com/cosmicflow2512/discord-author-watcher/pkgs/container/discord-author-watcher</Registry>
+  <TemplateURL>https://raw.githubusercontent.com/cosmicflow2512/discord-author-watcher/main/templates/my-discord-author-watcher.xml</TemplateURL>
+  <Network>bridge</Network>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/cosmicflow2512/discord-author-watcher/issues</Support>
+  <Project>https://github.com/cosmicflow2512/discord-author-watcher</Project>
+  <Overview>DiscordChatExporter-Polling mit User-ID-Filter und Pushover. Benutzer-Token unterliegt Discord-ToS-Risiko. Keine Weboberfläche.</Overview>
+  <Category>Tools:</Category>
+  <ExtraParams>--init --log-opt max-size=10m --log-opt max-file=3</ExtraParams>
+  <Config Name="Appdata" Target="/data" Default="/mnt/cache/appdata/discord-author-watcher" Mode="rw" Description="Persistente Warteschlange und Duplikatschutz" Type="Path" Display="always" Required="true" Mask="false">/mnt/cache/appdata/discord-author-watcher</Config>
+  <Config Name="TZ" Target="TZ" Default="Europe/Berlin" Mode="" Description="TZ" Type="Variable" Display="always" Required="false" Mask="false">Europe/Berlin</Config>
+  <Config Name="DISCORD_TOKEN" Target="DISCORD_TOKEN" Default="" Mode="" Description="DISCORD_TOKEN" Type="Variable" Display="always" Required="true" Mask="true" />
+  <Config Name="DISCORD_USER_IDS" Target="DISCORD_USER_IDS" Default="" Mode="" Description="User-IDs, kommasepariert (Pflicht)" Type="Variable" Display="always" Required="true" Mask="false" />
+  <Config Name="DISCORD_CHANNEL_IDS" Target="DISCORD_CHANNEL_IDS" Default="" Mode="" Description="Channel-IDs, kommasepariert (Pflicht)" Type="Variable" Display="always" Required="true" Mask="false" />
+  <Config Name="DISCORD_GUILD_IDS" Target="DISCORD_GUILD_IDS" Default="" Mode="" Description="Optionaler zusätzlicher Serverfilter" Type="Variable" Display="always" Required="false" Mask="false" />
+  <Config Name="PUSHOVER_API_TOKEN" Target="PUSHOVER_API_TOKEN" Default="" Mode="" Description="PUSHOVER_API_TOKEN" Type="Variable" Display="always" Required="true" Mask="true" />
+  <Config Name="PUSHOVER_USER_KEY" Target="PUSHOVER_USER_KEY" Default="" Mode="" Description="PUSHOVER_USER_KEY" Type="Variable" Display="always" Required="true" Mask="true" />
+  <Config Name="POLL_INTERVAL_SECONDS" Target="POLL_INTERVAL_SECONDS" Default="60" Mode="" Description="POLL_INTERVAL_SECONDS" Type="Variable" Display="always" Required="false" Mask="false">60</Config>
+  <Config Name="INITIAL_LOOKBACK_SECONDS" Target="INITIAL_LOOKBACK_SECONDS" Default="0" Mode="" Description="INITIAL_LOOKBACK_SECONDS" Type="Variable" Display="always" Required="false" Mask="false">0</Config>
+  <Config Name="EXPORT_TIMEOUT_SECONDS" Target="EXPORT_TIMEOUT_SECONDS" Default="300" Mode="" Description="EXPORT_TIMEOUT_SECONDS" Type="Variable" Display="always" Required="false" Mask="false">300</Config>
+  <Config Name="LOG_LEVEL" Target="LOG_LEVEL" Default="INFO" Mode="" Description="LOG_LEVEL" Type="Variable" Display="always" Required="false" Mask="false">INFO</Config>
+</Container>
