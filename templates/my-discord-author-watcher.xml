@@ -9,19 +9,22 @@
   <Privileged>false</Privileged>
   <Support>https://github.com/cosmicflow2512/discord-author-watcher/issues</Support>
   <Project>https://github.com/cosmicflow2512/discord-author-watcher</Project>
-  <Overview>DiscordChatExporter-Polling mit User-ID-Filter und Pushover. Benutzer-Token unterliegt Discord-ToS-Risiko. Keine Weboberfläche.</Overview>
+  <Overview>DiscordChatExporter-Polling mit User-ID-Filter und Pushover. Läuft als PUID/PGID mit reduzierten Capabilities. Benutzer-Token unterliegt Discord-ToS-Risiko. Keine Weboberfläche, keine Ports.</Overview>
   <Category>Tools:</Category>
-  <ExtraParams>--init --log-opt max-size=10m --log-opt max-file=3</ExtraParams>
+  <ExtraParams>--init --log-opt max-size=10m --log-opt max-file=3 --security-opt no-new-privileges=true --cap-drop ALL --cap-add CHOWN --cap-add SETUID --cap-add SETGID --cap-add DAC_OVERRIDE --cap-add FOWNER --memory=512m --pids-limit=256</ExtraParams>
   <Config Name="Appdata" Target="/data" Default="/mnt/cache/appdata/discord-author-watcher" Mode="rw" Description="Persistente Warteschlange und Duplikatschutz" Type="Path" Display="always" Required="true" Mask="false">/mnt/cache/appdata/discord-author-watcher</Config>
-  <Config Name="TZ" Target="TZ" Default="Europe/Berlin" Mode="" Description="TZ" Type="Variable" Display="always" Required="false" Mask="false">Europe/Berlin</Config>
-  <Config Name="DISCORD_TOKEN" Target="DISCORD_TOKEN" Default="" Mode="" Description="DISCORD_TOKEN" Type="Variable" Display="always" Required="true" Mask="true" />
-  <Config Name="DISCORD_USER_IDS" Target="DISCORD_USER_IDS" Default="" Mode="" Description="User-IDs, kommasepariert (Pflicht)" Type="Variable" Display="always" Required="true" Mask="false" />
-  <Config Name="DISCORD_CHANNEL_IDS" Target="DISCORD_CHANNEL_IDS" Default="" Mode="" Description="Channel-IDs, kommasepariert (Pflicht)" Type="Variable" Display="always" Required="true" Mask="false" />
-  <Config Name="DISCORD_GUILD_IDS" Target="DISCORD_GUILD_IDS" Default="" Mode="" Description="Optionaler zusätzlicher Serverfilter" Type="Variable" Display="always" Required="false" Mask="false" />
-  <Config Name="PUSHOVER_API_TOKEN" Target="PUSHOVER_API_TOKEN" Default="" Mode="" Description="PUSHOVER_API_TOKEN" Type="Variable" Display="always" Required="true" Mask="true" />
-  <Config Name="PUSHOVER_USER_KEY" Target="PUSHOVER_USER_KEY" Default="" Mode="" Description="PUSHOVER_USER_KEY" Type="Variable" Display="always" Required="true" Mask="true" />
-  <Config Name="POLL_INTERVAL_SECONDS" Target="POLL_INTERVAL_SECONDS" Default="60" Mode="" Description="POLL_INTERVAL_SECONDS" Type="Variable" Display="always" Required="false" Mask="false">60</Config>
-  <Config Name="INITIAL_LOOKBACK_SECONDS" Target="INITIAL_LOOKBACK_SECONDS" Default="0" Mode="" Description="INITIAL_LOOKBACK_SECONDS" Type="Variable" Display="always" Required="false" Mask="false">0</Config>
-  <Config Name="EXPORT_TIMEOUT_SECONDS" Target="EXPORT_TIMEOUT_SECONDS" Default="300" Mode="" Description="EXPORT_TIMEOUT_SECONDS" Type="Variable" Display="always" Required="false" Mask="false">300</Config>
-  <Config Name="LOG_LEVEL" Target="LOG_LEVEL" Default="INFO" Mode="" Description="LOG_LEVEL" Type="Variable" Display="always" Required="false" Mask="false">INFO</Config>
+  <Config Name="DISCORD_TOKEN" Target="DISCORD_TOKEN" Default="" Mode="" Description="Discord-Token (nur lokal, nie teilen)" Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="DISCORD_USER_IDS" Target="DISCORD_USER_IDS" Default="" Mode="" Description="User-IDs, kommasepariert (Pflicht)" Type="Variable" Display="always" Required="true" Mask="false"/>
+  <Config Name="DISCORD_CHANNEL_IDS" Target="DISCORD_CHANNEL_IDS" Default="" Mode="" Description="Channel-/Thread-IDs, kommasepariert (Pflicht)" Type="Variable" Display="always" Required="true" Mask="false"/>
+  <Config Name="DISCORD_GUILD_IDS" Target="DISCORD_GUILD_IDS" Default="" Mode="" Description="Optionaler zusätzlicher Serverfilter" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="PUSHOVER_API_TOKEN" Target="PUSHOVER_API_TOKEN" Default="" Mode="" Description="Pushover App-Token" Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="PUSHOVER_USER_KEY" Target="PUSHOVER_USER_KEY" Default="" Mode="" Description="Pushover User-Key" Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="TZ" Target="TZ" Default="Europe/Berlin" Mode="" Description="Zeitzone" Type="Variable" Display="advanced" Required="false" Mask="false">Europe/Berlin</Config>
+  <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="Benutzer-ID im Container (Unraid: 99 = nobody)" Type="Variable" Display="advanced" Required="false" Mask="false">99</Config>
+  <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Gruppen-ID im Container (Unraid: 100 = users)" Type="Variable" Display="advanced" Required="false" Mask="false">100</Config>
+  <Config Name="POLL_INTERVAL_SECONDS" Target="POLL_INTERVAL_SECONDS" Default="60" Mode="" Description="Abfrageintervall, Minimum 30" Type="Variable" Display="advanced" Required="false" Mask="false">60</Config>
+  <Config Name="INITIAL_LOOKBACK_SECONDS" Target="INITIAL_LOOKBACK_SECONDS" Default="0" Mode="" Description="Beim ersten Start so viele Sekunden zurückschauen" Type="Variable" Display="advanced" Required="false" Mask="false">0</Config>
+  <Config Name="EXPORT_TIMEOUT_SECONDS" Target="EXPORT_TIMEOUT_SECONDS" Default="300" Mode="" Description="Maximale Dauer je Kanalexport (30-3600)" Type="Variable" Display="advanced" Required="false" Mask="false">300</Config>
+  <Config Name="SENT_RETENTION_DAYS" Target="SENT_RETENTION_DAYS" Default="30" Mode="" Description="Tage, die zugestellte IDs für den Duplikatschutz behalten werden" Type="Variable" Display="advanced" Required="false" Mask="false">30</Config>
+  <Config Name="LOG_LEVEL" Target="LOG_LEVEL" Default="INFO" Mode="" Description="DEBUG, INFO, WARNING, ERROR" Type="Variable" Display="advanced" Required="false" Mask="false">INFO</Config>
 </Container>

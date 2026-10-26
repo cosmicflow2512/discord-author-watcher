@@ -1,11 +1,13 @@
-FROM python:3.12-alpine3.24 AS python
 FROM tyrrrz/discordchatexporter:2.48
 USER root
-COPY --from=python /usr/local /usr/local
-COPY --from=python /usr/lib/libsqlite3.so* /usr/lib/
-RUN mkdir -p /data /watcher
+# Python aus demselben Alpine-Repository wie das Basisimage: keine fremden musl/libssl-Abhängigkeiten.
+RUN apk add --no-cache python3 su-exec ca-certificates \
+ && mkdir -p /data /watcher
 WORKDIR /watcher
-COPY watcher.py .
-ENV PYTHONUNBUFFERED=1 DATA_DIR=/data TZ=Europe/Berlin
+COPY --chmod=0644 watcher.py .
+COPY --chmod=0755 entrypoint.sh .
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 DATA_DIR=/data TZ=Europe/Berlin PUID=99 PGID=100
 VOLUME ["/data"]
-ENTRYPOINT ["python3", "/watcher/watcher.py"]
+HEALTHCHECK --interval=60s --timeout=10s --start-period=60s --retries=3 \
+  CMD ["python3", "/watcher/watcher.py", "--healthcheck"]
+ENTRYPOINT ["/watcher/entrypoint.sh"]
